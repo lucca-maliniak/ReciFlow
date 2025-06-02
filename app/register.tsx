@@ -1,18 +1,25 @@
-import { View, Image, StyleSheet, ImageBackground } from 'react-native'
+import { View, Image, StyleSheet, ImageBackground, Text } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import React, { useState } from 'react'
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
+import UsuarioRepository, { User } from '@/repository/UsuarioRepository';
+import Toast from 'react-native-toast-message';
 
 
 export default function Register () {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleRegistrarUsuario = () => {
+  const handleRegistrarUsuario = async () => {
     if (password === confirmPassword) {
-      const userInput = { email, password, confirmPassword }
-      
+      const userInput: User = { email, senha: password }
+      const response = await UsuarioRepository.registerUser(userInput);
+      if (response.id) {
+        router.push('/(tabs)/home');
+        Toast.show({ type: 'success', text1: 'Sucesso!', text2: 'Usuário cadastrado com sucesso! 🚀' });
+      } 
     } else {
       throw new Error('As senhas devem ser iguais!')
     }
@@ -66,7 +73,7 @@ export default function Register () {
             placeholderTextColor={"grey"}
           />
           <Button icon="account-plus" mode="contained" textColor="white" style={styles.registerButton} onPress={handleRegistrarUsuario}>
-            <Link href={{ pathname: '/(tabs)/home' }} style={{ fontSize: 18, fontWeight: 600 }}>Registrar</Link>
+            <Text style={{ fontSize: 18, fontWeight: 600 }}>Registrar</Text>
           </Button>
         </View>
       </View>

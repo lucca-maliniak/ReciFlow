@@ -1,18 +1,39 @@
-import { View, Image, StyleSheet, ImageBackground } from 'react-native'
+import { View, Image, StyleSheet, ImageBackground, Text } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
-import React, { useState } from 'react'
-import { Link } from 'expo-router';
-
+import React, { useCallback, useEffect, useState } from 'react'
+import { Link, router } from 'expo-router';
+import UsuarioRepository, { User } from '@/repository/UsuarioRepository';
+import Toast from 'react-native-toast-message';
 
 export default function Login () {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [users, setUsers] = useState<User[]>([]);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const handleGetUsers = useCallback(async () => {
+    const users = await UsuarioRepository.getUsers();
+    setUsers(users);
+  }, []);
+
+  useEffect(() => {
+    handleGetUsers();
+  }, [handleGetUsers])
+
+  const handleLogin = async () => {
+    const userFinded = users.find((user: User) => user.senha === password && user.email === email)
+    if (userFinded) {
+      Toast.show({ type: 'success', text1: 'Sucesso!', text2: 'Usuário encontrado! 🚀' })
+      router.push('/(tabs)/home');
+    } else {
+      Toast.show({ type: 'error', text1: 'Erro!', text2: 'Usuário não foi encontrado! 💥' })
+    }
+  }
 
   return (
     <ImageBackground
-        source={require("../assets/images/fundo3.png")}
-        style={styles.backgroundImage}
-        resizeMode="cover"
+    source={require("../assets/images/fundo3.png")}
+    style={styles.backgroundImage}
+    resizeMode="cover"
     >
       <View style={styles.content}>
         <View>
@@ -43,11 +64,11 @@ export default function Login () {
             activeOutlineColor="green"
             placeholderTextColor={"grey"}
           />
-          <Button icon="login" mode="contained" textColor="white" style={styles.loginButton}>
-            <Link href={{ pathname: '/(tabs)/home' }} style={{ fontSize: 18, fontWeight: 600 }}>Entrar</Link>
+          <Button icon="login" mode="contained" textColor="white" style={styles.loginButton} onPress={handleLogin}>
+            <Text style={{ fontSize: 18, fontWeight: 600 }}>Entrar</Text>
           </Button>
           <Button icon="account-plus" mode="contained" textColor="#298867" style={styles.registerButton}>
-            <Link href={{ pathname: '/register' }} style={{ fontSize: 18, fontWeight: 600 }}>Registrar</Link>
+            <Link href='/register' style={{ fontSize: 18, fontWeight: 600 }}>Registrar</Link>
           </Button>
         </View>
       </View>
