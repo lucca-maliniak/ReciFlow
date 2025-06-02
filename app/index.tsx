@@ -2,10 +2,13 @@ import { View, Image, StyleSheet, ImageBackground, Text } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link, router } from 'expo-router';
-import UsuarioRepository, { User } from '@/repository/UsuarioRepository';
+import UsuarioRepository from '@/repository/UsuarioRepository';
 import Toast from 'react-native-toast-message';
+import { useUserStore } from '@/store/UserStore';
+import { User } from '@/model/User';
 
 export default function Login () {
+   const setupUser = useUserStore((state: any) => state.setupUser);
   const [users, setUsers] = useState<User[]>([]);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -20,13 +23,24 @@ export default function Login () {
   }, [handleGetUsers])
 
   const handleLogin = async () => {
-    const userFinded = users.find((user: User) => user.senha === password && user.email === email)
-    if (userFinded) {
-      Toast.show({ type: 'success', text1: 'Sucesso!', text2: 'Usuário encontrado! 🚀' })
-      router.push('/(tabs)/home');
-    } else {
-      Toast.show({ type: 'error', text1: 'Erro!', text2: 'Usuário não foi encontrado! 💥' })
-    }
+    const userFound = findUser();
+    if (!userFound)
+        return Toast.show({ type: 'error', text1: 'Erro!', text2: 'Usuário não foi encontrado! 💥' })
+    setUserIfFound(userFound)
+  }
+
+  const setUserIfFound = (userFound: User) => {
+    setUpSelectedUser(userFound)
+    Toast.show({ type: 'success', text1: 'Sucesso!', text2: 'Usuário encontrado! 🚀' })
+    router.push('/(tabs)/home')
+  }
+
+  const findUser = () => {
+    return users.find((user: User) => user.password === password && user.email === email)
+  }
+
+  const setUpSelectedUser = (userFinded: User) => {
+    setupUser(userFinded);
   }
 
   return (

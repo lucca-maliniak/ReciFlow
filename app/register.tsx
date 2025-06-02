@@ -2,26 +2,28 @@ import { View, Image, StyleSheet, ImageBackground, Text } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import React, { useState } from 'react'
 import { useRouter } from 'expo-router';
-import UsuarioRepository, { User } from '@/repository/UsuarioRepository';
+import UsuarioRepository from '@/repository/UsuarioRepository';
 import Toast from 'react-native-toast-message';
+import { User } from '@/model/User';
 
 
 export default function Register () {
   const router = useRouter();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleRegistrarUsuario = async () => {
     if (password === confirmPassword) {
-      const userInput: User = { email, senha: password }
+      const userInput: User = { name, email, password }
       const response = await UsuarioRepository.registerUser(userInput);
       if (response.id) {
-        router.push('/(tabs)/home');
+        router.push('/');
         Toast.show({ type: 'success', text1: 'Sucesso!', text2: 'Usuário cadastrado com sucesso! 🚀' });
       } 
     } else {
-      throw new Error('As senhas devem ser iguais!')
+      Toast.show({ type: 'error', text1: 'Erro!', text2: 'As senhas precisam ser iguais! 💥' });
     }
   }
 
@@ -36,6 +38,18 @@ export default function Register () {
           <Image source={require('../assets/images/reciflow.png')} style={styles.image}/>
         </View>
         <View style={styles.form}>
+          <TextInput
+            mode='outlined'
+            label="Nome"
+            placeholder="Digite o nome..."
+            onChangeText={(value: string) => setName(value)}
+            value={name}
+            style={styles.input}
+            outlineColor="green"
+            textColor="#298867"
+            activeOutlineColor="green"
+            placeholderTextColor={"grey"}
+          />
           <TextInput
             mode='outlined'
             label="Email"
@@ -93,7 +107,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   form: {
-    height: 250,
+    height: 300,
     justifyContent: 'space-around',
     alignItems: 'center',
   },

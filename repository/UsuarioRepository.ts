@@ -1,7 +1,4 @@
-export interface User {
-    email: string
-    senha: string
-}
+import { User } from "@/model/User";
 
 class UsuarioRepository {
     private url = 'https://reciflow-backend.onrender.com';
