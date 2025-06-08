@@ -1,5 +1,6 @@
-import { Text, View, StyleSheet, ImageBackground } from 'react-native';
-import { Card } from 'react-native-paper';
+import CardGenerico from '@/shared/GenericCard';
+import { MOCK_NEWS } from '@/shared/Mock';
+import { View, StyleSheet, ImageBackground } from 'react-native';
 
 export default function Home() {
   return (
@@ -10,23 +11,7 @@ export default function Home() {
     >
       <View style={styles.container}>
         <View style={styles.mainContainer}>
-          <Card style={styles.card}>
-            <Card.Content>
-              <Text>Titulo</Text>
-              <Text>Conteudo</Text>
-            </Card.Content>
-          </Card>
-          <Card style={styles.card}>
-            <Card.Content>
-              <Text>Titulo</Text>
-              <Text>Conteudo</Text>
-            </Card.Content>
-          </Card>
-          <Card style={styles.card}>
-            <Card.Content>
-              <Text>Conteudo</Text>
-            </Card.Content>
-          </Card>
+          {MOCK_NEWS.map(n => <CardGenerico key={MOCK_NEWS.indexOf(n)} title={n.title} content={n.description} link={n.link} />)}
         </View>
       </View>
     </ImageBackground>
@@ -41,10 +26,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'transparent',
-  },
-  card: {
-    backgroundColor: 'rgba(255, 255, 255)',
-    paddingVertical: 35,
   },
   mainContainer: {
     flex: 1,

@@ -3,17 +3,17 @@ export interface GreenPoints {
 }
 
 export interface GreenPointsRecord {
-  bairro: string;
-  geometria: string;
-  horario_funcionamento: string;
-  id_lev: string;
-  letra_imovel: string;
-  nome_lev: string;
-  nome_logradouro: string;
-  numero_imovel: string;
-  ref_localizacao: string;
-  regional: string;
-  tipo_logradouro: string;
-  tipo_material_coletado: string;
+  BAIRRO: string;
+  GEOMETRIA: string;
+  HORARIO_FUNCIONAMENTO: string;
+  ID_LEV: string;
+  LETRA_IMOVEL: string;
+  NOME_LEV: string;
+  NOME_LOGRADOURO: string;
+  NUMERO_IMOVEL: string;
+  REF_LOCALIZACAO: string;
+  REGIONAL: string;
+  TIPO_LOGRADOURO: string;
+  TIPO_MATERIAL_COLETADO: string;
   _id: number;
 }

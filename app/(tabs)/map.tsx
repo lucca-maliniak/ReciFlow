@@ -1,40 +1,35 @@
-import { GreenPoints, GreenPointsRecord } from '@/model/GreenPoint';
+import { GreenPointsRecord } from '@/model/GreenPoint';
 import ColetaRepository from '@/repository/ColetaRepository';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import proj4 from 'proj4';
+
+proj4.defs("EPSG:31983", "+proj=utm +zone=23 +south +datum=SIRGAS2000 +units=m +no_defs");
 
 export default function Map() {
-  const [greenPoints, setGreenPoints] = useState<GreenPoints | null>(null);
-  const [filteredGreenPoints, setFilteredGreenPoints] = useState<GreenPointsRecord[]>([]);
+  const [greenPoints, setGreenPoints] = useState<GreenPointsRecord[]>([]);
 
-  const handleGetGreenPoints = useCallback(async () => {
-    const greenPoints = await ColetaRepository.getGreenPoints();
-    setGreenPoints(greenPoints.result);
-    handleSetIconsInMap();
-  }, []);
+  useEffect(() => {
+    handleGetGreenPoints();
+  }, [])
 
-  const handleSetIconsInMap = () => {
-    if (greenPoints && greenPoints.records) {
-      const filteredGreenPoints = greenPoints.records.filter(r => r.bairro === 'Parque São Pedro')
-      setFilteredGreenPoints(filteredGreenPoints)
-    }
-  }
+  const handleGetGreenPoints = async () => {
+    const greenPointsResponse = await ColetaRepository.getGreenPoints();
+    setGreenPoints(greenPointsResponse.result.records);
+  };
 
   const getLatitudeAndLogitude = (point: GreenPointsRecord) => {
     const regex = /POINT \((-?[\d.]+) (-?[\d.]+)\)/;
-    const match = point.geometria.match(regex);
+    const match = point.GEOMETRIA.match(regex);
     if (match) {
-      const latitude = parseFloat(match[1]);
-      const longitude = parseFloat(match[2]);
-      return { latitude, longitude }
+      const [ longitude, latitude ] = proj4("EPSG:31983", "EPSG:4326", [parseFloat(match[1]), parseFloat(match[2])]);
+      return { longitude, latitude }
+    } else {
+      return { longitude: 0, latitude: 0 } 
     }
   }
-  
-  useEffect(() => {
-    handleGetGreenPoints();
-  }, [handleGetGreenPoints])
 
   return (
     <ImageBackground
@@ -43,25 +38,26 @@ export default function Map() {
       resizeMode="cover"
     >
       <View style={styles.container}>
-        <MapView 
+        <MapView
           style={styles.map} 
           initialRegion={{
-            latitude: -19.90573018842239,
-            longitude: -43.963491202747605,
+            latitude: -19.853846,
+            longitude: -43.967177,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}
         >
-          {filteredGreenPoints && filteredGreenPoints.map(point => {
+          {greenPoints && greenPoints.map(point => {
             const coordinates = getLatitudeAndLogitude(point);
             return (
               <Marker
+                key={point._id}
                 coordinate={{
-                  latitude: coordinates?.latitude ?? 0,
-                  longitude: coordinates?.longitude ?? 0,
+                  latitude: coordinates.latitude,
+                  longitude: coordinates.longitude,
                 }}
               >
-                <MaterialIcons name="recycling" size={26} color="green" />
+                <MaterialIcons name="recycling" size={35} color="green" />
               </Marker>
             )
           })}

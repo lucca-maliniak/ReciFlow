@@ -31,8 +31,8 @@ export default function TabLayout() {
           <Tabs.Screen
             name="home"
             options={{
-              title: 'Inicio',
-              tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+              title: 'Noticias',
+              tabBarIcon: ({ color }) => <TabBarIcon name="newspaper-o" color={color} />,
               ...footerStyle,
             }}
           />
