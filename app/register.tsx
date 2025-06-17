@@ -1,10 +1,10 @@
 import { View, Image, StyleSheet, ImageBackground, Text } from 'react-native'
-import { TextInput, Button } from 'react-native-paper'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'expo-router';
 import UsuarioRepository from '@/repository/UsuarioRepository';
 import Toast from 'react-native-toast-message';
 import { User } from '@/model/User';
+import { GenericForm } from '@/shared/GenericForm';
 
 
 export default function Register () {
@@ -37,59 +37,41 @@ export default function Register () {
         <View>
           <Image source={require('../assets/images/reciflow.png')} style={styles.image}/>
         </View>
-        <View style={styles.form}>
-          <TextInput
-            mode='outlined'
+        <GenericForm.Root styles={styles.form}>
+          <GenericForm.Input
             label="Nome"
-            placeholder="Digite o nome..."
-            onChangeText={(value: string) => setName(value)}
+            textPlaceholder="Digite o nome..."
+            setValue={setName}
             value={name}
             style={styles.input}
-            outlineColor="green"
-            textColor="#298867"
-            activeOutlineColor="green"
-            placeholderTextColor={"grey"}
           />
-          <TextInput
-            mode='outlined'
+          <GenericForm.Input
             label="Email"
-            placeholder="Digite o email..."
-            onChangeText={(value: string) => setEmail(value)}
+            textPlaceholder="Digite o email..."
+            setValue={setEmail}
             value={email}
             style={styles.input}
-            outlineColor="green"
-            textColor="#298867"
-            activeOutlineColor="green"
-            placeholderTextColor={"grey"}
           />
-          <TextInput
-            mode="outlined"
+          <GenericForm.Input
             label="Senha"
-            placeholder="Digite a senha..."
-            onChangeText={(value: string) => setPassword(value)}
+            textPlaceholder="Digite a senha..."
+            setValue={setPassword}
             value={password}
             style={styles.input}
-            outlineColor="green"
-            textColor="#298867"
-            activeOutlineColor="green"
-            placeholderTextColor={"grey"}
+            password
           />
-          <TextInput
-            mode="outlined"
+          <GenericForm.Input
             label="Confirme a senha"
-            placeholder="Confirme a senha..."
-            onChangeText={(value: string) => setConfirmPassword(value)}
+            textPlaceholder="Confirme a senha..."
+            setValue={setConfirmPassword}
             value={confirmPassword}
             style={styles.input}
-            outlineColor="green"
-            textColor="#298867"
-            activeOutlineColor="green"
-            placeholderTextColor={"grey"}
+            password
           />
-          <Button icon="account-plus" mode="contained" textColor="white" style={styles.registerButton} onPress={handleRegistrarUsuario}>
+          <GenericForm.Button icon="account-plus" mode="contained" textColor="white" styles={styles.registerButton} handle={handleRegistrarUsuario}>
             <Text style={{ fontSize: 18, fontWeight: 600 }}>Registrar</Text>
-          </Button>
-        </View>
+          </GenericForm.Button>
+        </GenericForm.Root>
       </View>
     </ImageBackground>
   );

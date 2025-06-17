@@ -6,6 +6,7 @@ import UsuarioRepository from '@/repository/UsuarioRepository';
 import Toast from 'react-native-toast-message';
 import { useUserStore } from '@/store/UserStore';
 import { User } from '@/model/User';
+import { GenericForm } from '@/shared/GenericForm';
 
 export default function Login () {
    const setupUser = useUserStore((state: any) => state.setupUser);
@@ -53,38 +54,29 @@ export default function Login () {
         <View>
           <Image source={require('../assets/images/reciflow.png')} style={styles.image}/>
         </View>
-        <View style={styles.form}>
-          <TextInput
-            mode='outlined'
+        <GenericForm.Root styles={styles.form}>
+          <GenericForm.Input
             label="Email"
-            placeholder="Enter the email..."
-            onChangeText={(value: string) => setEmail(value)}
+            textPlaceholder="Enter the email..."
+            setValue={setEmail}
             value={email}
             style={styles.input}
-            outlineColor="green"
-            textColor="#298867"
-            activeOutlineColor="green"
-            placeholderTextColor={"grey"}
           />
-          <TextInput
-            mode="outlined"
+          <GenericForm.Input
             label="Password"
-            placeholder="Enter the password..."
-            onChangeText={(value: string) => setPassword(value)}
+            textPlaceholder="Enter the password..."
+            setValue={setPassword}
             value={password}
             style={styles.input}
-            outlineColor="green"
-            textColor="#298867"
-            activeOutlineColor="green"
-            placeholderTextColor={"grey"}
+            password
           />
-          <Button icon="login" mode="contained" textColor="white" style={styles.loginButton} onPress={handleLogin}>
+          <GenericForm.Button icon="login" mode="contained" textColor="white" styles={styles.loginButton} handle={handleLogin}>
             <Text style={{ fontSize: 18, fontWeight: 600 }}>Entrar</Text>
-          </Button>
-          <Button icon="account-plus" mode="contained" textColor="#298867" style={styles.registerButton}>
+          </GenericForm.Button>
+          <GenericForm.Button icon="account-plus" mode="contained" textColor="#298867" styles={styles.registerButton}>
             <Link href='/register' style={{ fontSize: 18, fontWeight: 600 }}>Registrar</Link>
-          </Button>
-        </View>
+          </GenericForm.Button>
+        </GenericForm.Root>
       </View>
     </ImageBackground>
   );

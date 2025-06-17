@@ -1,13 +1,19 @@
 import { Linking, StyleSheet, Text } from 'react-native'
-import { Card } from "react-native-paper";
+import { Button, Card } from "react-native-paper";
+import { useState } from 'react';
 
 interface IGenericCard {
-  title: string;
-  content: string;
+  id: number;
+  handle: (id: number) => void;
+  title: string; 
+  description: string; 
   link: string;
+  isLiked: boolean;
 }
 
-export default function GenericCard({ title, content, link }: IGenericCard) {
+export default function GenericCard({ id, title, description, link, isLiked, handle }: IGenericCard) {
+  const [randomNumber, setRandomNumber] = useState(() => Math.ceil(Math.random() * 100));
+
   const openWebsite = () => {
     Linking.openURL(link);
   }
@@ -16,8 +22,11 @@ export default function GenericCard({ title, content, link }: IGenericCard) {
     <Card style={styles.card} onPress={openWebsite} mode='contained'>
       <Card.Title title={title} titleNumberOfLines={5} titleStyle={styles.title}/>
       <Card.Content>
-        <Text style={styles.content}>{content}</Text>
+        <Text style={styles.content}>{description}</Text>
       </Card.Content>
+      <Card.Actions>
+        <Button onPress={() => handle(id)} mode="text" icon={isLiked ? 'thumb-up' : 'thumb-up-outline'}>{randomNumber}K</Button>
+      </Card.Actions>
     </Card>
   )
 }
@@ -34,5 +43,8 @@ const styles = StyleSheet.create({
   },
   content: {
     textAlign: 'justify'
+  },
+  like: {
+    backgroundColor: 'transparent',
   }
 })
