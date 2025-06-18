@@ -1,7 +1,7 @@
 import { View, Image, StyleSheet, ImageBackground, Text } from 'react-native'
 import { useState } from 'react'
 import { useRouter } from 'expo-router';
-import UsuarioRepository from '@/repository/UsuarioRepository';
+import UsuarioRepository from '@/repository/UserRepository';
 import Toast from 'react-native-toast-message';
 import { User } from '@/model/User';
 import { GenericForm } from '@/shared/GenericForm';
@@ -29,7 +29,7 @@ export default function Register () {
 
   return (
     <ImageBackground
-        source={require("../assets/images/fundo3.png")}
+        source={require("../assets/images/background3.png")}
         style={styles.backgroundImage}
         resizeMode="cover"
     >

@@ -2,7 +2,7 @@ import { View, Image, StyleSheet, ImageBackground, Text } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link, router } from 'expo-router';
-import UsuarioRepository from '@/repository/UsuarioRepository';
+import UsuarioRepository from '@/repository/UserRepository';
 import Toast from 'react-native-toast-message';
 import { useUserStore } from '@/store/UserStore';
 import { User } from '@/model/User';
@@ -46,7 +46,7 @@ export default function Login () {
 
   return (
     <ImageBackground
-    source={require("../assets/images/fundo3.png")}
+    source={require("../assets/images/background3.png")}
     style={styles.backgroundImage}
     resizeMode="cover"
     >

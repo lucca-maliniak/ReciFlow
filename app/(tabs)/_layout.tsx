@@ -22,7 +22,7 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   return (
     <ImageBackground 
-      source={require("../../assets/images/fundo3.png")}
+      source={require("../../assets/images/background3.png")}
       style={styles.backgroundImage}
       resizeMode="cover"
     >

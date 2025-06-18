@@ -13,7 +13,7 @@ export default function Profile() {
 
   return (
     <ImageBackground
-        source={require('../../assets/images/fundo3.png')}
+        source={require('../../assets/images/background3.png')}
         style={styles.background}
         resizeMode="cover"
     >

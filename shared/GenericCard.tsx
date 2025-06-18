@@ -12,7 +12,7 @@ interface IGenericCard {
 }
 
 export default function GenericCard({ id, title, description, link, isLiked, handle }: IGenericCard) {
-  const [randomNumber, setRandomNumber] = useState(() => Math.ceil(Math.random() * 100));
+  const [randomNumber, _] = useState(() => Math.ceil(Math.random() * 100));
 
   const openWebsite = () => {
     Linking.openURL(link);

@@ -1,4 +1,4 @@
-import CardGenerico from '@/shared/GenericCard';
+import GenericCard from '@/shared/GenericCard';
 import { Mock } from '@/shared/Mock';
 import { useUserStore } from '@/store/UserStore';
 import { View, StyleSheet, ImageBackground } from 'react-native';
@@ -23,14 +23,14 @@ export default function Home() {
 
   return (
     <ImageBackground
-      source={require('../../assets/images/fundo3.png')}
+      source={require('../../assets/images/background3.png')}
       style={styles.background}
       resizeMode="cover"
     >
       <View style={styles.container}>
         <View style={styles.mainContainer}>
           {mockNews.map(n => 
-            <CardGenerico
+            <GenericCard
               id={n.id}
               key={mockNews.indexOf(n)} 
               title={n.title} 

@@ -1,5 +1,5 @@
 import { GreenPointsRecord } from '@/model/GreenPoint';
-import ColetaRepository from '@/repository/ColetaRepository';
+import WasteCollection from '@/repository/WasteCollectionRepository';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet, View } from 'react-native';
@@ -16,7 +16,7 @@ export default function Map() {
   }, [])
 
   const handleGetGreenPoints = async () => {
-    const greenPointsResponse = await ColetaRepository.getGreenPoints();
+    const greenPointsResponse = await WasteCollection.getGreenPoints();
     setGreenPoints(greenPointsResponse.result.records);
   };
 
@@ -33,7 +33,7 @@ export default function Map() {
 
   return (
     <ImageBackground
-      source={require('../../assets/images/fundo3.png')}
+      source={require('../../assets/images/background3.png')}
       style={styles.background}
       resizeMode="cover"
     >

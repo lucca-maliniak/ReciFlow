@@ -1,4 +1,4 @@
-class ColetaRepository {
+class WasteCollectionRepository {
 	private url = 'https://dados.pbh.gov.br/api/3/action/datastore_search';
 	
 	constructor() {}
@@ -11,4 +11,4 @@ class ColetaRepository {
 	}
 }
 
-export default new ColetaRepository();
+export default new WasteCollectionRepository();
